@@ -6,17 +6,15 @@ import java.util.Map;
 
 public class MenuGUI extends JFrame {
     private Map<Plato, Integer> carrito = new HashMap<>();
-    private JLabel infoPlato;  // Nueva JLabel para mostrar la descripción del plato
-    private JTextArea facturaTextArea;  // JTextArea para mostrar la factura
+    private JLabel infoPlato;  
+    private JTextArea facturaTextArea;  // Para mostrar la factura
 
     int precioTotal = 0;
 
     public MenuGUI() {
-        // Configuración básica del JFrame
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setSize(650, 400);
 
-        // Crear platos de ejemplo
         Plato platoFuerte1 = new Plato("Bandeja Paisa", "Exquisita bandeja paisa tradicional, el sabor no te decepcionará", "Plato fuerte","19 minutos" ,20000);
         Plato platoFuerte2 = new Plato("Pasta Boloñesa", "Rica pasta a la boloñesa con sus poderosos 100gr" + "<br>" + " de pasta pasaras la mejor exquisitez en tu paladar ", "Plato fuerte", "12 minutos", 15000);
         Plato platoFuerte3 = new Plato("Pollo Teriyaki", "Delicioso pollo hecho con delicadeza" + "<br>" + "y su exquisita salsa un manjar de otro mundo con su receta secreta trasmitida por decadas.", "Plato fuerte","15 minutos" ,18000);
@@ -29,7 +27,7 @@ public class MenuGUI extends JFrame {
         Plato platoBebida3 = new Plato("Kola Roman", "Deliciosa gaseosa, la copia barata de la cocacola," + "<br>" + " quien chucha compra Kola Roman si hay Coca Cola", "Bebida", "2 minutos",3000);
         Plato platoBebida4 = new Plato("Ginger", "Deliciosa gaseosa ginger," + "<br>" + "pero quien rayos pasa un almuerzo con ginger XD, pidela si quieres", "Bebida", "2 minutos",4500);
 
-        // Agregar platos al menú
+        //Menú
         Map<String, Plato> menu = new HashMap<>();
         menu.put("Bandaje Paisa", platoFuerte1);
         menu.put("Pasta Boloñesa", platoFuerte2);
@@ -43,13 +41,13 @@ public class MenuGUI extends JFrame {
         menu.put("Kola Roman", platoBebida3);
         menu.put("Ginger", platoBebida4);
 
-        // Crear elementos de la interfaz
+        // Este apartado es para crear la interfaz
         JComboBox<String> platosComboBox = new JComboBox<>(menu.keySet().toArray(new String[0]));
         JTextField unidadesTextField = new JTextField(5);
         JButton agregarButton = new JButton("Agregar al Carrito");
         JButton generarFacturaButton = new JButton("Generar Factura");
 
-        // Acción del botón Agregar al Carrito
+        // Boton_Agregar al Carrito
         agregarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -60,7 +58,6 @@ public class MenuGUI extends JFrame {
 
                     double precioPlato = platoSeleccionado.getPrecio();
 
-                    // Validaciones
                     if (precioTotal + (precioPlato * unidades) > 200000) {
                         throw new PrecioLimiteException("No puede superar el precio límite de almuerzo. ¿O acaso eres millonario?");
                     }
@@ -81,7 +78,7 @@ public class MenuGUI extends JFrame {
                             + "Tiempo de preparación: " + platoSeleccionado.getTiempo() + "<br>"
                             + "Precio: " + platoSeleccionado.getPrecio() + "</p></html>"); 
 
-                    // Agregar al carrito
+                    // Añadir al carrito
                     carrito.put(platoSeleccionado, carrito.getOrDefault(platoSeleccionado, 0) + unidades);
 
                     // Limpiar campos
@@ -119,9 +116,6 @@ public class MenuGUI extends JFrame {
             }
         });
 
-        
-
-        // Acción del botón Generar Factura
         generarFacturaButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -151,14 +145,11 @@ public class MenuGUI extends JFrame {
             }
         });
 
-        // Inicializar la JLabel para la descripción del plato
         infoPlato = new JLabel("Información del Plato Seleccionado:");
-
-        // Inicializar el JTextArea para la factura
         facturaTextArea = new JTextArea(10, 40);
         facturaTextArea.setEditable(false);
 
-        // Agregar elementos al JFrame
+        // Añadir elementos al JFrame
         JPanel panel = new JPanel();
         panel.add(new JLabel("Plato:"));
         panel.add(platosComboBox);
@@ -170,12 +161,10 @@ public class MenuGUI extends JFrame {
         panel.add(facturaTextArea);
 
         getContentPane().add(panel);
-
-        // Mostrar el JFrame
         setVisible(true);
     }
 
-    // Método para generar la factura
+    // Excepion para generar la factura
     private void generarFactura() {
         facturaTextArea.setText("Factura:\n");
         for (Map.Entry<Plato, Integer> entry : carrito.entrySet()) {
@@ -187,7 +176,7 @@ public class MenuGUI extends JFrame {
         facturaTextArea.append("\nTotal a pagar: " + precioTotal);
     }
 
-    // Método para verificar si se ha seleccionado una bebida en el carrito
+    // Excepcion para verificar si se ha seleccionado una bebida en el carrito
     private boolean bebidaSeleccionada() {
         for (Plato plato : carrito.keySet()) {
             if (plato.getTipo().equals("Bebida")) {
